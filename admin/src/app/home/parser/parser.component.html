@@ -1,0 +1,18 @@
+<button *ngIf="!parser?.editMode" class="list-group-item" [ngClass]="{'active': parser?.selected}">
+	{{_parser | json}}
+</button>
+<form *ngIf="!!parser?.editMode">
+	<div class="form-group">
+		<label for="parserLogin">Login</label>
+		<input type="text" class="form-control" id="parserLogin" placeholder="Login">
+	</div>
+	<div class="form-group">
+		<label for="parserPassword">Password</label>
+		<input type="text" class="form-control" id="parserPassword" placeholder="Password">
+	</div>
+	<div class="form-group">
+		<label for="parserPeriod">Period</label>
+		<input type="number" class="form-control" id="parserPeriod" placeholder="Period">
+	</div>
+	<button type="submit" class="btn btn-default">Save</button>
+</form>

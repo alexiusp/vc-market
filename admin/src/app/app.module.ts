@@ -8,12 +8,14 @@ import { CORSBrowserXHR } from './http.hack';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DataComponent } from './data/data.component';
+import { ParserComponent } from './home/parser/parser.component';
 
 @NgModule({
   declarations: [
     AppComponent,
 		HomeComponent,
-		DataComponent
+		DataComponent,
+		ParserComponent
   ],
   imports: [
     BrowserModule,

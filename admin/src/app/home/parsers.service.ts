@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import { Parser } from './parser';
+import { IParser } from './parser';
 
 @Injectable()
 export class ParsersService {
@@ -14,7 +14,7 @@ export class ParsersService {
   constructor(private http: Http) { }
 
 
-	getParsers (): Observable<Parser[]> {
+	getParsers (): Observable<IParser[]> {
 		return this.http.get(this.apiUrls.parsers)
 			.map(this.extractData)
 			.catch(this.handleError);
