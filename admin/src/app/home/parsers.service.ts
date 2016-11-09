@@ -14,8 +14,13 @@ export class ParsersService {
   constructor(private http: Http) { }
 
 
-	getParsers (): Observable<IParser[]> {
+	getParsers(): Observable<IParser[]> {
 		return this.http.get(this.apiUrls.parsers)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+	addParser(p : IParser): Observable<IParser[]> {
+		return this.http.post(this.apiUrls.parsers, p)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}

@@ -1,18 +1,58 @@
 <button *ngIf="!parser?.editMode" class="list-group-item" [ngClass]="{'active': parser?.selected}">
 	{{_parser | json}}
 </button>
-<form *ngIf="!!parser?.editMode">
-	<div class="form-group">
-		<label for="parserLogin">Login</label>
-		<input type="text" class="form-control" id="parserLogin" placeholder="Login">
+<div class="card card-outline-secondary">
+	<div class="card-block">
+		<form *ngIf="!!parser?.editMode" (ngSubmit)="onSubmit()" #parserForm="ngForm">
+			<div class="form-group row">
+				<label for="city" class="col-sm-2 col-form-label">VCity</label>
+				<div class="col-sm-10">
+					<select class="form-control" id="city" [(ngModel)]="parser.city" name="city" required>
+						<option *ngFor="let c of _cities" [value]="c">{{c}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="login" class="col-sm-2 col-form-label">Login</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="login" placeholder="Login" [(ngModel)]="parser.login" name="login" required #login="ngModel">
+					<div [hidden]="login.valid || login.pristine" class="alert alert-danger">
+          	Login is required
+        	</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="password" class="col-sm-2 col-form-label">Password</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="password" placeholder="Password" [(ngModel)]="parser.password" name="password" required #password="ngModel">
+					<div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+          	Password is required
+        	</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="timeout" class="col-sm-2 col-form-label">Period</label>
+				<div class="col-sm-10">
+					<input type="number" class="form-control" id="timeout" placeholder="Period" [(ngModel)]="parser.timeout" name="timeout" #timeout="ngModel">
+					<div [hidden]="parser.timeout >= 10 || timeout.pristine" class="alert alert-danger">
+          	Timeout must be not less than 10 minutes
+        	</div>
+				</div>
+			</div>
+			<div class="form-group row" *ngIf="!!parser.lastrun">
+		    <label class="col-sm-2 col-form-label">Last run</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static mb-0">{{parser.lastrun}}</p>
+		    </div>
+		  </div>
+			<div class="form-group row">
+				<div class="col-md-4 offset-md-4">
+					<button type="submit" class="btn btn-block btn-primary" [disabled]="!parserForm.form.valid">Save</button>
+				</div>
+				<div class="col-md-4">
+					<button type="reset" class="btn btn-block btn-default">Cancel</button>
+				</div>
+			</div>
+		</form>
 	</div>
-	<div class="form-group">
-		<label for="parserPassword">Password</label>
-		<input type="text" class="form-control" id="parserPassword" placeholder="Password">
-	</div>
-	<div class="form-group">
-		<label for="parserPeriod">Period</label>
-		<input type="number" class="form-control" id="parserPeriod" placeholder="Period">
-	</div>
-	<button type="submit" class="btn btn-default">Save</button>
-</form>
+</div>

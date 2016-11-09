@@ -3,3 +3,9 @@ export enum VCity {
 	vBerlin,
 	vKiev
 }
+
+export const VCityList = [
+	"vMoscow",
+	"vBerlin",
+	"vKiev"
+];

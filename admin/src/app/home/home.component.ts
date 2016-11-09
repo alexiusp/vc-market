@@ -15,13 +15,15 @@ export class HomeComponent implements OnInit {
 	newItem: Parser;
 
   constructor(private parsersService : ParsersService) {
-		
+
 	}
 
 	addParser = function() {
-		this.newItem = new Parser(VCity[VCity.vMoscow], "Citizen", "");
-		this.newItem.selected = false;
-		this.newItem.editMode = true;
+		if(!this.newItem || !this.newItem.editMode) {
+			this.newItem = new Parser(VCity[VCity.vMoscow], "Citizen", "");
+			this.newItem.selected = false;
+			this.newItem.editMode = true;
+		}
 	}
 
   ngOnInit() {
