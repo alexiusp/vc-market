@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IParser, Parser } from '../parser';
-import { VCity, VCityList } from '../../core/v-city.enum';
+import { Parser, ParserItem } from '../../core/parser';
 
 @Component({
   selector: 'vc-parser',
@@ -8,28 +7,35 @@ import { VCity, VCityList } from '../../core/v-city.enum';
   styleUrls: ['./parser.component.css']
 })
 export class ParserComponent {
-	private _savedCopy : Parser;
-	private _parser : Parser;
+	private _savedCopy : ParserItem;
+	private _parser : ParserItem;
 	private _cities;
 
 	@Input('parser')
-	set parser(p: Parser) {
-		console.log("parser setter", p);
+	set parser(p: ParserItem) {
+		console.log("set parser:", p);
 		this._parser = p;
-		this._savedCopy = p;
-		this._cities = [];
-		for(let c of VCityList) this._cities.push(c);
+		this._savedCopy = p.clone();
 	}
 	get parser() {return this._parser}
 
-  constructor() { }
+  constructor() {
+		this._cities = ["vMoscow", "vBerlin", "vKiev"];
+	}
 
 	onSubmit() {
-		/*if() {
-			console.log("submit");
-		}*/
+		if(!!this.onChange) {
+			this.onChange.emit(this._parser);
+		}
 	}
 
 	@Output() onChange = new EventEmitter();
 
+	resetForm() {
+		if(!!this.onChange) {
+			this._savedCopy.inEdit = false;
+			this._parser = this._savedCopy.clone();
+			this.onChange.emit(this._savedCopy);
+		}
+	}
 }

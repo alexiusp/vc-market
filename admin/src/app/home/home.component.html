@@ -6,10 +6,10 @@
 <div class="row margin">
 	<div class="col-sm-4">
 		<div class="list-group">
-			<vc-parser *ngFor="let parser of parsers" parser="parser"></vc-parser>
+			<vc-parser *ngFor="let parser of parsers" [parser]="parser"></vc-parser>
 		</div>
 	</div>
 	<div class="col-sm-8">
-		<vc-parser *ngIf="!!newItem" [parser]="newItem"></vc-parser>
+		<vc-parser *ngIf="!!newItem" [parser]="newItem" (onChange)="changeParser($event)"></vc-parser>
 	</div>
 </div>

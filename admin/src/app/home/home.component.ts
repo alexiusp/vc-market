@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Parser, IParser } from './parser';
+import { Parser, ParserItem } from '../core/parser';
 import { ParsersService } from './parsers.service';
-import { VCity } from '../core/v-city.enum';
 
 @Component({
   selector: 'app-home',
@@ -11,27 +10,47 @@ import { VCity } from '../core/v-city.enum';
 })
 export class HomeComponent implements OnInit {
 	errorMessage: string;
-	parsers: IParser[];
-	newItem: Parser;
+	parsers: ParserItem[];
+	newItem: ParserItem;
 
   constructor(private parsersService : ParsersService) {
-
 	}
 
-	addParser = function() {
-		if(!this.newItem || !this.newItem.editMode) {
-			this.newItem = new Parser(VCity[VCity.vMoscow], "Citizen", "");
-			this.newItem.selected = false;
-			this.newItem.editMode = true;
-		}
+	addParser() {
+		console.log("addParser");
+		this.newItem = new ParserItem();
+		this.newItem.isSelected = false;
+		this.newItem.inEdit = true;
 	}
 
-  ngOnInit() {
+	changeParser(p : ParserItem) {
+		console.log("changeParser", p)
+		if(!!p && p.inEdit) {
+			this.parsersService.addParser(p.parser)
+			.subscribe(
+				parser => {this.refresh();},
+				error => this.errorMessage = <any>error
+			);
+		} else this.newItem = undefined;
+	}
+
+	refresh() {
 		this.parsersService.getParsers()
 		.subscribe(
-			parsers => this.parsers = parsers,
+			(parsers : Parser[]) => {
+				let _parsers = [];
+				for(let p of <Parser[]>parsers) {
+					let pi = new ParserItem(p);
+					_parsers.push(pi);
+				}
+				this.parsers = _parsers;
+				console.log("binding", _parsers);
+			},
 			error =>  this.errorMessage = <any>error
 		);
+	}
+  ngOnInit() {
+		this.refresh();
   }
 
 }
