@@ -6,10 +6,12 @@
 <div class="row margin">
 	<div class="col-sm-4">
 		<div class="list-group">
-			<vc-parser *ngFor="let parser of parsers" [parser]="parser"></vc-parser>
+			<vc-parser *ngFor="let parser of parsers; let i = index"
+				[parser]="parser"
+				(onSelect)="selectParser($event, i)"></vc-parser>
 		</div>
 	</div>
 	<div class="col-sm-8">
-		<vc-parser *ngIf="!!newItem" [parser]="newItem" (onChange)="changeParser($event)"></vc-parser>
+		<vc-parser-form *ngIf="!!selectedItem" [parser]="selectedItem" (onChange)="changeParser($event)"></vc-parser-form>
 	</div>
 </div>

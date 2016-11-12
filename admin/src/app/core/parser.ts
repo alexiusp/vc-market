@@ -1,4 +1,4 @@
-import { Editable } from './editable'
+import { Selectable } from './selectable'
 import { Clonable } from './clonable';
 
 export interface Parser {
@@ -10,7 +10,7 @@ export interface Parser {
 	_id?			: string;
 }
 
-export class ParserItem extends Editable implements Clonable {
+export class ParserItem extends Selectable implements Clonable {
 	private _parser : Parser;
 	constructor(p?: Parser) {
 		super();
@@ -30,7 +30,6 @@ export class ParserItem extends Editable implements Clonable {
 	public clone(): ParserItem {
     var cloneObj = new ParserItem(this._parser);
 		cloneObj.isSelected = this.isSelected;
-		cloneObj.inEdit = this.inEdit;
     return cloneObj;
 	}
 }

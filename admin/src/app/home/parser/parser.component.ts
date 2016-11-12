@@ -7,35 +7,22 @@ import { Parser, ParserItem } from '../../core/parser';
   styleUrls: ['./parser.component.css']
 })
 export class ParserComponent {
-	private _savedCopy : ParserItem;
 	private _parser : ParserItem;
-	private _cities;
-
 	@Input('parser')
 	set parser(p: ParserItem) {
 		console.log("set parser:", p);
-		this._parser = p;
-		this._savedCopy = p.clone();
+		this._parser = p.clone();
 	}
 	get parser() {return this._parser}
 
   constructor() {
-		this._cities = ["vMoscow", "vBerlin", "vKiev"];
 	}
 
-	onSubmit() {
-		if(!!this.onChange) {
-			this.onChange.emit(this._parser);
-		}
-	}
+	@Output() onSelect = new EventEmitter();
 
-	@Output() onChange = new EventEmitter();
-
-	resetForm() {
-		if(!!this.onChange) {
-			this._savedCopy.inEdit = false;
-			this._parser = this._savedCopy.clone();
-			this.onChange.emit(this._savedCopy);
-		}
+	select() {
+		console.log("onSelect:", this._parser);
+		this._parser.isSelected = !this._parser.isSelected;
+		if(!!this.onSelect) this.onSelect.emit(this._parser);
 	}
 }

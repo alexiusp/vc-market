@@ -11,29 +11,42 @@ import { ParsersService } from './parsers.service';
 export class HomeComponent implements OnInit {
 	errorMessage: string;
 	parsers: ParserItem[];
-	newItem: ParserItem;
+	selectedItem: ParserItem;
 
   constructor(private parsersService : ParsersService) {
 	}
 
 	addParser() {
 		console.log("addParser");
-		this.newItem = new ParserItem();
-		this.newItem.isSelected = false;
-		this.newItem.inEdit = true;
+		this.selectedItem = new ParserItem();
+		this.selectedItem.isSelected = true;
 	}
 
 	changeParser(p : ParserItem) {
 		console.log("changeParser", p)
-		if(!!p && p.inEdit) {
-			this.parsersService.addParser(p.parser)
-			.subscribe(
-				parser => {this.refresh();},
-				error => this.errorMessage = <any>error
-			);
-		} else this.newItem = undefined;
-	}
+		if(p.isSelected) {
+			if(this.selectedIndex >= 0) {
 
+			} else {
+				this.parsersService.addParser(p.parser)
+				.subscribe(
+					parser => {this.refresh();},
+					error => this.errorMessage = <any>error
+				);
+			}
+		} else {
+			console.log("resetSelected");
+			if(this.selectedIndex >= 0) this.parsers[this.selectedIndex] = p;
+			this.resetSelected();
+		}
+	}
+	resetSelected() {
+		if(!!this.parsers)
+			for(let p of this.parsers) p.isSelected = false;
+		this.selectedItem = undefined;
+		this.selectedIndex = undefined;
+		console.log("resetSelected", this.parsers);
+	}
 	refresh() {
 		this.parsersService.getParsers()
 		.subscribe(
@@ -50,7 +63,18 @@ export class HomeComponent implements OnInit {
 		);
 	}
   ngOnInit() {
+		this.resetSelected();
 		this.refresh();
   }
 
+	selectedIndex : number;
+	selectParser(parser, index) {
+		console.log("select", parser, index, this.parsers[index]);
+		this.resetSelected();
+		this.parsers[index] = parser;
+		if(this.parsers[index].isSelected) {
+			this.selectedItem = parser;
+			this.selectedIndex = index;
+		}
+	}
 }
