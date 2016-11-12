@@ -26,13 +26,17 @@ export class HomeComponent implements OnInit {
 		console.log("changeParser", p)
 		if(p.isSelected) {
 			if(this.selectedIndex >= 0) {
-
+				this.parsersService.editParser(p.parser)
+					.subscribe(
+						parser => {this.refresh();},
+						error => this.errorMessage = <any>error
+					);
 			} else {
 				this.parsersService.addParser(p.parser)
-				.subscribe(
-					parser => {this.refresh();},
-					error => this.errorMessage = <any>error
-				);
+					.subscribe(
+						parser => {this.refresh();},
+						error => this.errorMessage = <any>error
+					);
 			}
 		} else {
 			console.log("resetSelected");
@@ -41,8 +45,14 @@ export class HomeComponent implements OnInit {
 		}
 	}
 	resetSelected() {
-		if(!!this.parsers)
-			for(let p of this.parsers) p.isSelected = false;
+		if(!!this.parsers) {
+			let _parsers = [];
+			for(let p of this.parsers) {
+				p.isSelected = false;
+				_parsers.push(p.clone());
+			}
+			this.parsers = _parsers;
+		}
 		this.selectedItem = undefined;
 		this.selectedIndex = undefined;
 		console.log("resetSelected", this.parsers);
@@ -54,6 +64,7 @@ export class HomeComponent implements OnInit {
 				let _parsers = [];
 				for(let p of <Parser[]>parsers) {
 					let pi = new ParserItem(p);
+					if(!!this.selectedItem && this.selectedItem.parser._id == p._id) pi.isSelected = true;
 					_parsers.push(pi);
 				}
 				this.parsers = _parsers;
@@ -73,8 +84,16 @@ export class HomeComponent implements OnInit {
 		this.resetSelected();
 		this.parsers[index] = parser;
 		if(this.parsers[index].isSelected) {
-			this.selectedItem = parser;
+			this.selectedItem = parser.clone();
 			this.selectedIndex = index;
 		}
+	}
+	deleteParser(parser) {
+		console.log("delete:", parser);
+		this.parsersService.deleteParser(parser.parser)
+			.subscribe(
+				parser => {this.refresh();},
+				error => this.errorMessage = <any>error
+			);
 	}
 }

@@ -1,6 +1,9 @@
 <div class="row margin">
-	<div class="col-sm-12">
-		<button type="button" class="btn btn-success pull-right" (click)="addParser()">Add new Parser</button>
+	<div class="col-sm-10">
+		<div *ngIf="!!errorMessage" class="alert alert-danger">Error: {{errorMessage}}</div>
+	</div>
+	<div class="col-sm-2">
+		<button type="button" class="btn btn-success btn-block" (click)="addParser()">Add new Parser</button>
 	</div>
 </div>
 <div class="row margin">
@@ -12,6 +15,10 @@
 		</div>
 	</div>
 	<div class="col-sm-8">
-		<vc-parser-form *ngIf="!!selectedItem" [parser]="selectedItem" (onChange)="changeParser($event)"></vc-parser-form>
+		<vc-parser-form *ngIf="!!selectedItem"
+			[parser]="selectedItem"
+			(onDelete)="deleteParser($event)"
+			(onChange)="changeParser($event)">
+		</vc-parser-form>
 	</div>
 </div>

@@ -14,8 +14,8 @@ export class ParserFormComponent {
 	@Input('parser')
 	set parser(p: ParserItem) {
 		console.log("set parser-form:", p);
-		this._parser = p;
-		this._savedCopy = p.clone();
+		this._parser = p.clone();
+		this._savedCopy = p;
 	}
 	get parser() {return this._parser}
 
@@ -36,6 +36,14 @@ export class ParserFormComponent {
 			this._parser = this._savedCopy.clone();
 			this._parser.isSelected = false;
 			this.onChange.emit(this._parser);
+		}
+	}
+
+	@Output() onDelete = new EventEmitter();
+	delete() {
+		if(!!this.onDelete) {
+			this._parser.isSelected = false;
+			this.onDelete.emit(this._parser);
 		}
 	}
 }

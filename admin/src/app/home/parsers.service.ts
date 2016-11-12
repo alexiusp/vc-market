@@ -9,7 +9,8 @@ import { Parser } from '../core/parser';
 @Injectable()
 export class ParsersService {
 	private apiUrls = {
-		"parsers" : "api/parsers"
+		"parsers" : "api/parsers",
+		"parser" : "api/parsers/:id"
 	}
   constructor(private http: Http) { }
 
@@ -21,6 +22,16 @@ export class ParsersService {
 	}
 	addParser(p : Parser): Observable<Parser[]> {
 		return this.http.post(this.apiUrls.parsers, p)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+	editParser(p: Parser): Observable<Parser[]> {
+		return this.http.put(this.apiUrls.parser.replace(":id", p._id), p)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+	deleteParser(p: Parser): Observable<Parser[]> {
+		return this.http.delete(this.apiUrls.parser.replace(":id", p._id), p)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}

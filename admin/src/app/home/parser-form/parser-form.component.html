@@ -43,7 +43,10 @@
 		    </div>
 		  </div>
 			<div class="form-group row">
-				<div class="col-md-4 offset-md-4">
+				<div class="col-md-4">
+					<button type="button" (click)="delete()" class="btn btn-block btn-danger">Delete</button>
+				</div>
+				<div class="col-md-4">
 					<button type="submit" class="btn btn-block btn-primary" [disabled]="!parserForm.form.valid">Save</button>
 				</div>
 				<div class="col-md-4">
