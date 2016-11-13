@@ -85,11 +85,11 @@ exports.init = function(app, db) {
 	app.set('trust proxy', true);
 	app.use('/api', router);
 	// error handlers
-	app.use(function(req, res, next){
+	app.use('/api', function(req, res, next){
 		handleResult(res, {status:404, message:"Page not found."}, null);
     return;
 	});
-	app.use(function(err, req, res, next){
+	app.use('/api', function(err, req, res, next){
 		handleResult(res, {status: err.status || 500, message: err.message}, null);
     return;
 	});
