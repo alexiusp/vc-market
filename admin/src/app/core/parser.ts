@@ -28,7 +28,15 @@ export class ParserItem extends Selectable implements Clonable {
 	set parser(p : Parser) {this._parser = p;}
 
 	public clone(): ParserItem {
-    var cloneObj = new ParserItem(this._parser);
+		let clonedParser = <Parser>{
+			city : this._parser.city,
+			login: this._parser.login,
+			password: this._parser.password
+		}
+		if(!!this._parser.timeout) clonedParser.timeout = this._parser.timeout;
+		if(!!this._parser.lastrun) clonedParser.lastrun = this._parser.lastrun;
+		if(!!this._parser._id) clonedParser._id = this._parser._id;
+    var cloneObj = new ParserItem(clonedParser);
 		cloneObj.isSelected = this.isSelected;
     return cloneObj;
 	}
